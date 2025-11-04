@@ -1,0 +1,64 @@
+# application-dev.yml (Spring Boot 3.x) - consolidé, prêt pour le profil "dev"
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  # Datasource (PostgreSQL)
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/idp_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:admin123}
+    driver-class-name: org.postgresql.Driver
+
+  # JPA / Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    open-in-view: false
+
+  # Mail (Spring Mail) - dev (MailHog / Mailtrap)
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USER:}
+    password: ${MAIL_PASS:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:false}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS:false}
+
+  # Flyway
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+# Server port
+server:
+  port: ${SERVER_PORT:8080}
+
+# JWT properties (top-level custom)
+jwt:
+  secret: ${JWT_SECRET:changeme-dev-secret-change-in-prod}
+  expiration-ms: ${JWT_EXPIRATION_MS:900000}         # 15 minutes
+  refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:2592000000} # 30 days
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.yourorg: DEBUG
+
+# Springdoc / Swagger UI
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
